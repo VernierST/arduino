@@ -38,10 +38,10 @@ void setup()
 }
 void loop() 
 {
-  Time = (ReadingNumber*TimeBetweenReadings);// in ms
+  //the print below does the division first to avoid overflows
+  Serial.print(ReadingNumber/1000.0*TimeBetweenReadings); 
   Count=analogRead(ThermistorPIN);       // read count from the A/D converter 
   Temp=Thermistor(Count);       // and  convert it to CelsiusSerial.print(Time/1000); //display in seconds, not milliseconds                       
-  Serial.print(Time/1000); // print time in seconds
   Serial.print("\t"); //tab character
   Serial.println(Temp,1);   // display temperature to one digit                                
   delay(TimeBetweenReadings); // Delay a bit... 

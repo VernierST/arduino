@@ -41,7 +41,7 @@ void setup()
   Serial.println ("Distance"); //change to match sensor
   Serial.print("seconds");
   Serial.print("\t"); // tab character
-  Serial.println ("meters"); //change to match sensor
+  Serial.println ("centimeters"); //change to match sensor
 }
 void loop() 
 {

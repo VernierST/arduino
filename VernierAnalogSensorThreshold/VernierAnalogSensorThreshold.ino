@@ -43,8 +43,8 @@ void setup()
 }
 void loop() 
 {
-  Time = (ReadingNumber*TimeBetweenReadings);// in ms
-  Serial.print(Time/1000); //display in seconds, not milliseconds
+  //the print below does the division first to avoid overflows
+  Serial.print(ReadingNumber/1000.0*TimeBetweenReadings); 
   Count = analogRead(A0);
   Voltage = Count / 1024 * 5.0;// convert from count to raw voltage
   SensorReading= Intercept + Voltage * Slope;
