@@ -50,8 +50,8 @@ void loop()
   cli();
   Pos = encoderPos*res;
   SREG = oldSREG;
-  Time = (ReadingNumber*TimeBetweenReadings);// in ms
-  Serial.print(Time/1000); // print time in seconds
+  Time = (ReadingNumber/1000.0*TimeBetweenReadings);
+  Serial.print(Time); // print time in seconds
   Serial.print("\t"); //tab character
   Serial.println(encoderPos*res);   // display temperature to one digit                                
   delay(TimeBetweenReadings); 

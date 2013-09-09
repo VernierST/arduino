@@ -19,8 +19,8 @@ void setup() {
   Serial.println("Time (s)    Voltage Readings from A0 (N)");
 }
 void loop() {
-  //the print below does the division first to avoid overflows
-  Serial.print(ReadingNumber/1000.0*TimeBetweenReadings); 
+  Time = (ReadingNumber*TimeBetweenReadings);// in ms
+  Serial.print(Time/1000); //display in seconds, not milliseconds
   Count = analogRead(A0);
   Voltage = Count / 1024 * 5.0;// convert from count to raw voltage
   Serial.print("            ");

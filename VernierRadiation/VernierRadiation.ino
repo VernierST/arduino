@@ -2,17 +2,17 @@
 VernierRadiation
 Monitors a Vernier Radiation Monitor connected to BTD connector.
 
-The sketch sums the Radiation Monitor Counts in the period "Duration". 
-The default duration is 1 second.
+The sketch sums the Radiation Monitor Counts in the period "CountTime". 
+The default CountTime is 1 second.
 
 See www.vernier.com/arduino for more information.
  */
 unsigned long TimeMsStart = 0;
-int photogate = 2; // Pin assignment for photogate
+int photogate = 2; // Pin assignment for radiation monitor
 int LEDpin =13;/// line for LED to turn on when count is received.
 int countSum = 0;
 int IntervalNumber =0;
-int duration = 1000;// this is the total time between reported results, the collect time
+int CountTime = 1000;// this is the total time between reported results, the collect time
 void setup() 
 {
   Serial.begin(9600);           // set up Serial library at 9600 bps
@@ -31,7 +31,7 @@ void loop ()
 {
   countSum = 0;
   TimeMsStart = millis();
-  while ((millis() - TimeMsStart) <= duration)
+  while ((millis() - TimeMsStart) <= CountTime)
   {
     if (digitalRead(photogate)==HIGH) 
     { 

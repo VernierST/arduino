@@ -2,8 +2,8 @@
 VernierCount
 Monitors a Vernier Drop Counter or Vernier photogate connected to BTD connector.
 
-The sketch sums the "Blocked" events in the period "Duration". As written, the 
-duration is 10 seconds.
+The sketch sums the "Blocked" events in the period "CountTime". As written, the 
+CountTime is 10 seconds.
 
 See www.vernier.com/arduino for more information.
 
@@ -13,7 +13,7 @@ int photogate = 2; // Pin assignment for photogate
 int LEDpin =13;/// line for LED to turn on when count is received.
 int countSum = 0;
 int IntervalNumber =0;
-int duration = 10000;// this is the total time between reported results, the collect time
+int CountTime = 10000;// this is the total time between reported results, the collect time
 
 void setup() 
 {
@@ -33,19 +33,19 @@ void loop ()
 {
   countSum = 0;
   TimeMsStart = millis();
-  while ((millis() - TimeMsStart) <= duration)
+  while ((millis() - TimeMsStart) <= CountTime)
   {
     if (digitalRead(photogate)==LOW) 
     { 
       digitalWrite(LEDpin, HIGH);// turn on LED
       countSum ++;
-      while(digitalRead(photogate)==LOW){};
+      while(digitalRead(photogate)==LOW);
       digitalWrite(LEDpin, LOW); //turn off LED
      }
   }
 Serial.print(IntervalNumber);
 Serial.print("\t"); // tab character
-Serial.print(countSum);
+Serial.println(countSum);
 IntervalNumber++;
 } ;// end of loop
 
