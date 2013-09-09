@@ -8,4 +8,4 @@ Vernier has always supported hands-on, do-it-yourself projects for students (or 
 
 All sketches are developed by Vernier.
 
-[1]: http://wwww.vernier.com/arduino/
+[1]: http://www.vernier.com/arduino/
