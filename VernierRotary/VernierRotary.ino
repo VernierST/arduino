@@ -1,5 +1,5 @@
 /*
-VernierRotary
+VernierRotary (v 2013.11)
 
 This sketch read a Vernier Rotary Motion Sensor connected to BTD connector.
 This sketch uses interrupts. It is very difficult to read the pulses from

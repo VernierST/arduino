@@ -1,14 +1,16 @@
-/*
-VernierAnalogStore (v 2013.11)
-Reads a Vernier analog (BTA) Sensor connected to pin A0 of the Arduino 
-and and stores  the data in the non-volatile EEPROM memory of the Arduino.
+ /*
+VernierThermistorStore (v 2013.11)
+Reads a Vernier Temperature Sensor (TMP-BTA or STS-BTA) connected to pin A0 
+of the Arduino and and stores  the data in the non-volatile EEPROM memory of the Arduino.
 This sketch displays the time and sensor readings on the Serial Monitor. 
-As written, the readings will be taken every second. You can stop the
-data collection by pressing the button (after three points are collected).
+As written, the readings will be displayed every minute.  You can stop the
+data collection by pressing the button during data collection, after the
+first 3 points are taken.
 
 Change the variable TimeBetweenReadings to change the rate.
 Change the variable NumberOfReadings to change the number of data points to take.
-Change the info between //////// lines to change sensors.
+You can stop the data collection by pressing the button during data collection, 
+after the first 3 points are taken.
 
 See www.vernier.com/arduino for more information, especially for information 
 on how this sketch can be used to collect remote data with the Arduino away 
@@ -38,15 +40,13 @@ int Count;
 float Voltage;
 float SensorReading;
 unsigned long Time;
-long unsigned int TimeBetweenReadings = 1000; //in ms
+long unsigned int TimeBetweenReadings = 60000; //in ms, default is 1 minute
 int NumberOfPoints= 511;
 ///////////////////////////////////
-String SensorName = "Dual-Range Force Sensor, 10 N";
-String Measurement = "Force";
-String ShortMeasurement = "F"; // this is a shortened version of the label
-String Units = "Newtons";
-float Intercept = 12.25;
-float Slope = -4.9;
+String SensorName = "Temperature";
+String Measurement = "Temp";
+String ShortMeasurement = "T"; // this is a shortened version of the label
+String Units = "Degrees C";
 ///////////////////////////////////
 
 void setup()
@@ -57,7 +57,7 @@ void setup()
   pinMode(AnalogDataPin, INPUT);
   pinMode(ledPin1, OUTPUT);// Set LED output pin
   Serial.begin(9600);
-  Serial.println("VernierAnalogStore sketch");
+  Serial.println("VernierThermistorStore sketch");
   Serial.println("Press and hold to collect new data");
   Serial.println("Press button briefly to read data stored in EEPROM");
   Serial.println("and send it to the Serial Monitor");
@@ -91,8 +91,8 @@ void loop()
     }
   buttonLast = buttonVal;
 }
-
 //=================================================
+
 // Events to trigger by short click of button
 void ReadEEPROMData()// //Send data to Serial Monitor
 {
@@ -126,8 +126,7 @@ void ReadEEPROMData()// //Send data to Serial Monitor
       //the print below does the division first to avoid overflows
       Serial.print(i/2/1000.0*TimeBetweenReadings);  
       Serial.print("\t");                // print a tab character 
-      Voltage = Count  * (5.0/ 1024);
-      SensorReading= Intercept + Voltage * Slope;
+      SensorReading =Thermistor(Count); //This function calculates temperature from ADC count
       Serial.println(SensorReading);
    }
   Serial.println(" ");
@@ -167,7 +166,6 @@ void CollectData() //Collect Data
   Serial.print("s");                // print a tab character  
   Serial.print("\t"); 
   Serial.println(Units);
-  
   Sample=0;
   do
   {
@@ -179,13 +177,12 @@ void CollectData() //Collect Data
      Serial.print(Sample/1000.0*TimeBetweenReadings); 
      Serial.print("\t");
      Count= analogRead(AnalogDataPin);
-     Voltage = Count * (5.0/ 1024);
-     SensorReading = Intercept + Voltage * Slope;
+     SensorReading =Thermistor(Count); //This function calculates temperature from ADC count  SensorReading =Thermistor(Count); //This function calculates temperature from ADC count
      Serial.println(SensorReading);
      EEPROM.write(addr, lowByte(Count));
      EEPROM.write(addr + 1, highByte(Count));
      addr +=2;  //increment address pointer twice 
-     delay (300);//blink to the LED
+     delay (300);//turn off LED after this time
      digitalWrite(ledPin1, false);
      do
        {
@@ -197,11 +194,11 @@ void CollectData() //Collect Data
    } 
   while ((buttonVal==HIGH || Sample< 3) && Sample < NumberOfPoints); 
   for (int i=1; i<4;i++)
-    {//flash LED to indicate stop
-      digitalWrite(ledPin1, true);
-      delay (100);
-      digitalWrite(ledPin1, false);
-      delay (100);
+    {  //flash LED to indicate stop
+       digitalWrite(ledPin1, true);
+       delay (100);
+       digitalWrite(ledPin1, false);
+       delay (100);
     }
   //the number of points is stored at base and base+1;
   //data starts at the next two bytes (base=2 and base+3, etc);
@@ -214,3 +211,37 @@ void CollectData() //Collect Data
   digitalWrite(ledPin1, false);
 };//end of Data Collect
 
+float Thermistor(int Raw) //This function calculates temperature from ADC count
+{
+ /* Inputs ADC count from Thermistor and outputs Temperature in Celsius
+ *  requires: include <math.h>
+ * There is a huge amount of information on the web about using thermistors with the Arduino.
+ * Here we are concerned about using the Vernier Stainless Steel Temperature Probe TMP-BTA and the 
+ * Vernier Surface Temperature Probe STS-BTA, but the general principles are easy to extend to other
+ * thermistors.
+ * This version utilizes the Steinhart-Hart Thermistor Equation:
+ *    Temperature in Kelvin = 1 / {A + B[ln(R)] + C[ln(R)]3}
+ *   for the themistor in the Vernier TMP-BTA probe:
+ *    A =0.00102119 , B = 0.000222468 and C = 1.33342E-7
+ *    Using these values should get agreement within 1 degree C to the same probe used with one
+ *    of the Vernier interfaces
+ * 
+ * Schematic:
+ *   [Ground] -- [thermistor] -------- | -- [15,000 ohm bridge resistor] --[Vcc (5v)]
+ *                                     |
+ *                                Analog Pin 0
+ *
+ For the circuit above:
+ * Resistance = ( Count*RawADC /(1024-Count))
+ */
+ long Resistance; 
+ float Resistor = 15000; //brige resistor
+// the measured resistance of your particular bridge resistor in
+//the Vernier BTA-ELV this is a precision 15K resisitor 
+  float Temp;  // Dual-Purpose variable to save space.
+  Resistance=( Resistor*Raw /(1024-Raw)); 
+  Temp = log(Resistance); // Saving the Log(resistance) so not to calculate  it 4 times later
+  Temp = 1 / (0.00102119 + (0.000222468 * Temp) + (0.000000133342 * Temp * Temp * Temp));
+  Temp = Temp - 273.15;  // Convert Kelvin to Celsius                      
+  return Temp;                                      // Return the Temperature
+}

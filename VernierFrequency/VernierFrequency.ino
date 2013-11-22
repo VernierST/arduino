@@ -1,5 +1,5 @@
 /*
-VernierFrequency
+VernierFrequency (v 2013.11)
 
 This sketch produces a tone on a speaker connected to pin D9 of
 the Arduino. It is based on the Tone 2 tutorial.

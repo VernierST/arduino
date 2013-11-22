@@ -1,5 +1,5 @@
 /*
-VernierRadiation
+VernierRadiation (v 2013.11)
 Monitors a Vernier Radiation Monitor connected to BTD connector.
 
 The sketch sums the Radiation Monitor Counts in the period "CountTime". 

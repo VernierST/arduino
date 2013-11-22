@@ -1,18 +1,19 @@
 /*
- VernierDCUPMW
+ VernierDCUPMW (v 2013.11)
  This sketch uses Pulse-Width Modulation to vary the voltage
- on pin 3 of the BTD socket. It would normally be used with
- the Vernier DCU connected to BTD connector. 
+ on an output of the DCU which is connected to the BTD1 socket.
+ 
+Only certain pins on the Arduino are set up pulse-width modulation.
+Here we use this pin D3 on the Arduino, which controls DCU output line 2
+if the DCU is plugged into the BTD1 connector.
 
-We use this pin D3 on the DCU because it is the first of the 
-digital output lines on the BTD connnector (as wired here)
-which has the Pulse Width Modulation capability. This is just a slight
-variation of the Ardunio examples sketch fading (see: http://arduino.cc/en/Tutorial/Fading)
+This sketch is a variation of the Ardunio examples sketch fading
+(see: http://arduino.cc/en/Tutorial/Fading)
 
 See www.vernier.com/arduino for more information.
  
  */
-int PWMPin = 6;    /* LED connected to digital pin 6 
+int PWMPin = 3;    /* LED connected to digital pin 3 
 */
 void setup()  
 { 

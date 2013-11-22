@@ -1,5 +1,5 @@
 /*
-VernierCount
+VernierCount (v 2013.11)
 Monitors a Vernier Drop Counter or Vernier photogate connected to BTD connector.
 
 The sketch sums the "Blocked" events in the period "CountTime". As written, the 

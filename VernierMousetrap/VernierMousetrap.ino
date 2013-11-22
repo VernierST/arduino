@@ -1,5 +1,5 @@
 /*
-VernierMousetrap
+VernierMousetrap (v 2013.11)
 Controls a stepper motor (unipolar or bipolar) via a Vernier Digital
 Control Unit (DCU) connected to the first BTD connector.
 
@@ -18,9 +18,9 @@ int Direction =0;//direction 0 =CW
 int x;
 int StepValue;
 const int Pin1 = 2; // pin
-const int Pin2 = 4; // pin
-const int Pin3 = 6; // pin
-const int Pin4 = 8; // pin
+const int Pin2 = 3; // pin
+const int Pin3 = 4; // pin
+const int Pin4 = 5; // pin
 int photogate =3; //
 int output; //number sent to DCU
 int DCUStep[4]; //pattern used to drive stepper motor
