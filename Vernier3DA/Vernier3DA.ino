@@ -1,16 +1,16 @@
 /*
- Vernier3DA
+Vernier3DA (v 2013.11)
 This project assumes that you have a Vernier 3D Accelerometer connected to 
 three BTA connectors. It also assumes that you have an RGB LED connected to
-PWM output 3, 5, and 6.
+PWM outputs 3, 5, and 6.
 
 Plug x into the first BTA (A0), y into the second BTA (A2), and z into
 the third BTA (A4).
 The brightness of the red LED is controlled by the x axis acceleration.
-The brightness of the green LED is controlled by the x axis acceleration.
-The brightness of the blue LED is controlled by the x axis acceleration.
+The brightness of the green LED is controlled by the y axis acceleration.
+The brightness of the blue LED is controlled by the z axis acceleration.
 
-The minReading, maxReading, and BlueAdj values are not really important,
+The minReading, maxReading, and BlueAdj values are not essential,
 but they were added to make better color mixes.
 
 See www.vernier.com/arduino for more information.

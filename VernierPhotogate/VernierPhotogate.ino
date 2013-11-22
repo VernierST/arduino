@@ -1,5 +1,5 @@
 /*
- VernierPhotogate
+ VernierPhotogate (v 2013.11)
  Monitors a Vernier Photogate connected to BTD connector. 
 
 This sketch lists the time in microseconds and milliseconds since the

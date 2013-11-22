@@ -1,5 +1,5 @@
 /*
-VernierAnalogSensor
+VernierAnalogSensor (v 2013.11)
 Reads a Vernier analog (BTA) Sensor connected to pin A0 of the Arduino. 
 This sketch displays the time and sensor readings on the Serial Monitor. 
 As written, the readings will be displayed every half second. 

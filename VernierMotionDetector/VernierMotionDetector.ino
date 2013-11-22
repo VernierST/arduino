@@ -1,5 +1,5 @@
 /*
-VernierMotionDetector
+VernierMotionDetector (v 2013.11)
 Takes data from a Vernier Motion Detector connected to BTD connector.
 
 This sketch measures the time taken for the ultrasound to return (in microseconds)
@@ -24,7 +24,7 @@ long Duration; // time it take echo to return
 const float SpeedOfSound = 340; //in m/s
 float Distance;// in centimeters
 int val = 0;
-const int TriggerPin = 4; //trigger pin
+const int TriggerPin = 3; //trigger pin
 const int EchoPin = 2;// echo pin
 void setup() 
 {

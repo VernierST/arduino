@@ -1,5 +1,5 @@
 /*
-VernierThermistor
+VernierThermistor (v 2013.11)
 Reads the temperature from a Vernier Stainless Steel Temperature Probe (TMP-BTA)
 or Surface Temperature Sensor (STS-BTA) connected to the BTA connector. 
 As written, the readings will be displayed every half second. Change the variable 

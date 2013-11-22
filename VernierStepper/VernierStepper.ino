@@ -1,5 +1,5 @@
 /*
- VernierStepper
+ VernierStepper (v 2013.11)
 Controls a stepper motor (unipolar or bipolar) connected to a Vernier Digital
 Control Unit (DCU) connected to BTD connector.
 
@@ -13,9 +13,9 @@ int Direction =0;//direction 0 =CW
 int x;
 int StepValue;
 const int Pin1 = 2;
-const int Pin2 = 4; 
-const int Pin3 = 6; 
-const int Pin4 = 8; 
+const int Pin2 = 3; 
+const int Pin3 = 4; 
+const int Pin4 = 5; 
 int output; //number sent to DCU
 int DCUStep[4]; //pattern used to drive stepper motor
 void setup() 
