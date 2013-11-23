@@ -1,11 +1,16 @@
  /*
-VernierThermistorStore
+VernierThermistorStore (v 2013.11)
 Reads a Vernier Temperature Sensor (TMP-BTA or STS-BTA) connected to pin A0 
 of the Arduino and and stores  the data in the non-volatile EEPROM memory of the Arduino.
 This sketch displays the time and sensor readings on the Serial Monitor. 
-As written, the readings will be displayed every half second. 
+As written, the readings will be displayed every minute.  You can stop the
+data collection by pressing the button during data collection, after the
+first 3 points are taken.
+
 Change the variable TimeBetweenReadings to change the rate.
 Change the variable NumberOfReadings to change the number of data points to take.
+You can stop the data collection by pressing the button during data collection, 
+after the first 3 points are taken.
 
 See www.vernier.com/arduino for more information, especially for information 
 on how this sketch can be used to collect remote data with the Arduino away 
@@ -26,6 +31,8 @@ int buttonVal = 0; // value read from button
 int buttonLast = 1; // buffered value of the button's previous state
 long btnDnTime; // time the button was pressed down
 long btnUpTime; // time the button was released
+long ReadingTime; //time at which a reading was taken
+long ElapsedTime; //time since last reading
 boolean ignoreUp = false; // whether to ignore the button release because the click+hold was triggered
 boolean ledVal1 = false; // state of LED 1
 int AnalogDataPin = A0; // this may be changed depending on circuit wiring
@@ -41,6 +48,7 @@ String Measurement = "Temp";
 String ShortMeasurement = "T"; // this is a shortened version of the label
 String Units = "Degrees C";
 ///////////////////////////////////
+
 void setup()
 {
   // Set button input pin
@@ -55,6 +63,7 @@ void setup()
   Serial.println("and send it to the Serial Monitor");
   Serial.println(" ");
 }
+
 void loop()
 {
   digitalWrite(ledPin1, false);
@@ -83,6 +92,7 @@ void loop()
   buttonLast = buttonVal;
 }
 //=================================================
+
 // Events to trigger by short click of button
 void ReadEEPROMData()// //Send data to Serial Monitor
 {
@@ -125,6 +135,7 @@ void ReadEEPROMData()// //Send data to Serial Monitor
   digitalWrite(ledPin1, false); //turn off LED
   //end of send data to Serial Monitor
 }
+
 //=================================================
 // Events to trigger by long click of button
 void CollectData() //Collect Data
@@ -155,10 +166,10 @@ void CollectData() //Collect Data
   Serial.print("s");                // print a tab character  
   Serial.print("\t"); 
   Serial.println(Units);
-  
   Sample=0;
   do
   {
+     ReadingTime = millis();// note time of reading
      digitalWrite(ledPin1, true);
      Serial.print(Sample);
      Serial.print("\t");
@@ -171,13 +182,24 @@ void CollectData() //Collect Data
      EEPROM.write(addr, lowByte(Count));
      EEPROM.write(addr + 1, highByte(Count));
      addr +=2;  //increment address pointer twice 
-     delay (TimeBetweenReadings/2);//these lines are to give a blink to the LED
+     delay (300);//turn off LED after this time
      digitalWrite(ledPin1, false);
-     delay (TimeBetweenReadings/2);
-     buttonVal = digitalRead(buttonPin);// check button status
-     Sample++ ;
+     do
+       {
+         buttonVal = digitalRead(buttonPin);// check button status
+         ElapsedTime=millis()-ReadingTime;
+       }
+         while ((buttonVal==HIGH || Sample< 3) && (ElapsedTime<TimeBetweenReadings));
+   Sample++ ;
    } 
-  while ((buttonVal==HIGH || Sample< 5) && Sample < NumberOfPoints); 
+  while ((buttonVal==HIGH || Sample< 3) && Sample < NumberOfPoints); 
+  for (int i=1; i<4;i++)
+    {  //flash LED to indicate stop
+       digitalWrite(ledPin1, true);
+       delay (100);
+       digitalWrite(ledPin1, false);
+       delay (100);
+    }
   //the number of points is stored at base and base+1;
   //data starts at the next two bytes (base=2 and base+3, etc);
   EEPROM.write(base+ 0, lowByte(Sample));
@@ -188,6 +210,7 @@ void CollectData() //Collect Data
   Serial.println(" ");
   digitalWrite(ledPin1, false);
 };//end of Data Collect
+
 float Thermistor(int Raw) //This function calculates temperature from ADC count
 {
  /* Inputs ADC count from Thermistor and outputs Temperature in Celsius
@@ -222,4 +245,3 @@ float Thermistor(int Raw) //This function calculates temperature from ADC count
   Temp = Temp - 273.15;  // Convert Kelvin to Celsius                      
   return Temp;                                      // Return the Temperature
 }
-
