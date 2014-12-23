@@ -1,23 +1,24 @@
 /*
- VernierStepper (v 2013.11)
+ VernierStepper (v 2014.09)
 Controls a stepper motor (unipolar or bipolar) connected to a Vernier Digital
-Control Unit (DCU) connected to BTD connector.
+Control Unit (DCU) connected to BTD 2 connector.
 
 This sketch causes the stepper motor to rotate 100 steps and then the rotation
 pauses for one second and the rotation is repeated in the opposite direction.
 See www.vernier.com/arduino for more information.
 
 */int Duration=30; //step time in ms
-int Steps = 4; //number of steps to take
-int Direction =0;//direction 0 =CW
-int x;
-int StepValue;
-const int Pin1 = 2;
-const int Pin2 = 3; 
-const int Pin3 = 4; 
-const int Pin4 = 5; 
+int Direction =0;//direction 0 =CW, 1 = CCW
+//the lines below are so that you can quickly change this code if you want to
+//use the DCU in the BTD1 connector for some reason.
+int DCUinBTD2=1;// change this to 0 if you want to use the DCU on BTD 1
+const int Pin1 = 2 +DCUinBTD2*4;
+const int Pin2 = 3 +DCUinBTD2*4;
+const int Pin3 = 4 +DCUinBTD2*4;
+const int Pin4 = 5 +DCUinBTD2*4;
 int output; //number sent to DCU
 int DCUStep[4]; //pattern used to drive stepper motor
+
 void setup() 
 {
   Serial.begin(9600); // set up Serial library at 9600 bps
@@ -26,6 +27,7 @@ void setup()
   pinMode(Pin3, OUTPUT);
   pinMode(Pin4, OUTPUT);
 };// end of setup
+
 void loop ()
 {
 DCU(0);//Turn off all lines
@@ -37,7 +39,8 @@ Step(100,1);// rotate counter clockwise
  
 void Step(int Steps, int direction)
 {
-  if (direction ==0)
+  int x;
+  int StepValue;if (direction ==0)
     {
       DCUStep[0]=5;//,9,10,6}; //on this order for CW
       DCUStep[1]=9;

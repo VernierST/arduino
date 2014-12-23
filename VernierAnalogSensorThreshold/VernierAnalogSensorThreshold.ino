@@ -1,5 +1,5 @@
 /*
-VernierAnalogSensorThreshold (v. 2013.11)
+VernierAnalogSensorThreshold (v. 2014.09)
 Reads a Vernier analog (BTA) sensor connnected to pin A0 of the Arduino. This
 sketch displays the sensor reading on the Serial Monitor. As written, the 
 reading will be displayed every half second. Change the variable 
@@ -11,12 +11,6 @@ threshold.
 See www.vernier.com/arduino for more information.
 
 */
-float Count;
-float Voltage;
-float SensorReading;
-int TimeBetweenReadings = 500;
-int ReadingNumber=0;
-float Time;
 float Threshold =100 ;// this is the limit you are setting (here we are using 100)
 ////////////////////////////////////////
 // This is the information on the sensor being used. 
@@ -24,6 +18,7 @@ float Threshold =100 ;// this is the limit you are setting (here we are using 10
 char Sensor[]="Hand Dynamometer";
 float Intercept = -19.295;
 float Slope = 175.416;
+int TimeBetweenReadings = 500;
 /////////////////////////////////////////
 void setup() 
 {
@@ -34,19 +29,27 @@ void setup()
   Serial.print(" ");
   Serial.println("Readings taken using Ardunio");
   Serial.println("Data Set");
-  Serial.print("Time");
+  Serial.print("Time");//long name
   Serial.print("\t"); //tab character
-  Serial.println ("Force"); //change to match sensor
-  Serial.print("seconds");
+  Serial.println ("Force"); //long nanme, change to match sensor
+  Serial.print ("t"); //short name 
+  Serial.print("\t"); //tab character
+  Serial.println("F");//short name, change to match sensor 
+  Serial.print("seconds");//units
   Serial.print("\t"); // tab character
   Serial.println ("newtons"); //change to match sensor
 }
 void loop() 
 {
-  //the print below does the division first to avoid overflows
+  float Count;
+float Voltage;
+float SensorReading;
+int ReadingNumber=0;
+float Time;
+//the print below does the division first to avoid overflows
   Serial.print(ReadingNumber/1000.0*TimeBetweenReadings); 
   Count = analogRead(A0);
-  Voltage = Count / 1024 * 5.0;// convert from count to raw voltage
+  Voltage = Count / 1023 * 5.0;// convert from count to raw voltage
   SensorReading= Intercept + Voltage * Slope;
   Serial.print("        ");
   Serial.println(SensorReading);

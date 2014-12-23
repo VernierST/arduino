@@ -1,5 +1,5 @@
 /*
-VernierAnalogStore (v 2013.11)
+VernierAnalogStore (v 2014.09)
 Reads a Vernier analog (BTA) Sensor connected to pin A0 of the Arduino 
 and and stores  the data in the non-volatile EEPROM memory of the Arduino.
 This sketch displays the time and sensor readings on the Serial Monitor. 
@@ -111,13 +111,13 @@ void ReadEEPROMData()// //Send data to Serial Monitor
   Serial.print(" readings taken with a Vernier ");
   Serial.println(SensorName);
   Serial.println("Data Set From Arduino");
-  Serial.print("Time");
+  Serial.print("Time");//long name
   Serial.print("\t");                // print a tab character  
   Serial.println(Measurement);  
-  Serial.print("T");
+  Serial.print("T");//short name
   Serial.print("\t");                // print a tab character  
-  Serial.println(ShortMeasurement);  
-  Serial.print("s");
+  Serial.println(ShortMeasurement);  //short name
+  Serial.print("s");//units
   Serial.print("\t");                // print a tab character 
   Serial.println(Units);  
   for (i = 0; i <(NumberOfPointsRead)*2; i+=2)
@@ -126,7 +126,7 @@ void ReadEEPROMData()// //Send data to Serial Monitor
       //the print below does the division first to avoid overflows
       Serial.print(i/2/1000.0*TimeBetweenReadings);  
       Serial.print("\t");                // print a tab character 
-      Voltage = Count  * (5.0/ 1024);
+      Voltage = Count  * (5.0/ 1023);
       SensorReading= Intercept + Voltage * Slope;
       Serial.println(SensorReading);
    }
@@ -179,7 +179,7 @@ void CollectData() //Collect Data
      Serial.print(Sample/1000.0*TimeBetweenReadings); 
      Serial.print("\t");
      Count= analogRead(AnalogDataPin);
-     Voltage = Count * (5.0/ 1024);
+     Voltage = Count * (5.0/ 1023);
      SensorReading = Intercept + Voltage * Slope;
      Serial.println(SensorReading);
      EEPROM.write(addr, lowByte(Count));
