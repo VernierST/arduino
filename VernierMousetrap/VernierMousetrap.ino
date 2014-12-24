@@ -3,7 +3,7 @@ VernierMousetrap (v 2014.09)
 
 A Vernier Photogate should also be connnected to the second BTD 1 connector.
 The sketch monitors this photogate and Controls a stepper motor (unipolar or 
-bipolar) via a Vernier Digital Control Unit (DCU) connected to the second BTD 
+bipolar) via a Vernier Digital Control Unit (DCU) connected to the BTD 2 
 connector.
 
 This sketch will continuously check the photogate and start the stepper
@@ -18,13 +18,10 @@ int Steps = 55; //number of steps to take
 int Direction =0;//direction 0 =CW
 int x;
 int StepValue;
-//the lines below are so that you can quickly change this code if you want to
-//use the DCU in the BTD1 connector for some reason.
-int DCUinBTD2=1;// change this to 0 if you want to use the DCU on BTD 1
-const int Pin1 = 2 +DCUinBTD2*4;
-const int Pin2 = 3 +DCUinBTD2*4;
-const int Pin3 = 4 +DCUinBTD2*4;
-const int Pin4 = 5 +DCUinBTD2*4;
+const int Pin1 = 6;
+const int Pin2 = 7;
+const int Pin3 = 8;
+const int Pin4 = 9;
 int photogate =2; //This is the input for a photogate on the BTD 1 connector
 int LEDpin =13;/// line for LED to turn on when photogate is blocked
 int output; //number sent to DCU
@@ -88,7 +85,9 @@ void Step(int Steps, int direction)
     } ;//end of for
 };// end of Step
  
-void DCU (int output)
+void DCU (int output) 
+/* This segment is used for all DCU applications.
+Not all only cases 0 - 3 will be used in this sketch. */
 {
   switch (output) 
   {
