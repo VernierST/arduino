@@ -1,5 +1,5 @@
 /*
-VernierDigitalAutoID (v 2013.12)
+VernierDigitalAutoID (v 2014.12)
 Reads the information to AutoID a Vernier BTD sensor with resistor ID.
 
 When used with the SparkFun Vernier Interface Shield, this program will AutoID
@@ -63,7 +63,7 @@ void BTDResistorSensorID(int Channel)
       SensorNumber[Channel] = 0;
       delay (10);
       int CountID = analogRead(A5);
-      VoltageID[Channel] = CountID / 1024.0 * VCC;// convert from count to voltage 
+      VoltageID[Channel] = CountID / 1023.0 * VCC;// convert from count to voltage 
       if (VoltageID[Channel]>3.27 & VoltageID[Channel]<3.61) SensorNumber[Channel] = 2; //Motion Detector
       if (VoltageID[Channel]>4.45 & VoltageID[Channel]<4.46) SensorNumber[Channel] = 3; //motion not used
       if (VoltageID[Channel]>3.80 & VoltageID[Channel]<3.88) SensorNumber[Channel] = 4;  //photogate
@@ -71,7 +71,7 @@ void BTDResistorSensorID(int Channel)
       if (VoltageID[Channel]>4.32 & VoltageID[Channel]<4.40) SensorNumber[Channel] = 6; //rotary
       if (VoltageID[Channel]>4.50 & VoltageID[Channel]<4.59) SensorNumber[Channel] = 7;//Radiation Monitor
       if (VoltageID[Channel]>4.45 & VoltageID[Channel]<4.46) SensorNumber[Channel] = 8; //DCU - 1st generation
-      if (VoltageID[Channel]>1.52 & VoltageID[Channel]<1.68) SensorNumber[Channel] = 9; //DCU - 2nd generation
+      if (VoltageID[Channel]>1.52 & VoltageID[Channel]<1.70) SensorNumber[Channel] = 9; //DCU - 2nd generation
       if (VoltageID[Channel]>1.18 & VoltageID[Channel]<1.30) SensorNumber[Channel] = 10; //Polarimeter
       if (VoltageID[Channel]>0.86 & VoltageID[Channel]<0.95) SensorNumber[Channel] = 11;   //Projectile Launcher
       if (VoltageID[Channel]>0.62 & VoltageID[Channel]<0.68) SensorNumber[Channel] = 12; //Linear Translator for DAK
