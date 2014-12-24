@@ -19,6 +19,12 @@ int Steps = 55; //number of steps to take
 int Direction =0;//direction 0 =CW
 int x;
 int StepValue;
+<<<<<<< HEAD
+=======
+//the lines below are so that you can quickly change this code if you want to
+//use the DCU in the BTD1 connector for some reason.
+int DCUinBTD2=1;// change this to 0 if you want to use the DCU on BTD 1
+>>>>>>> 88b98e863c57e10bf11d612aa3dff49f449ca280
 const int Pin1 = 6;
 const int Pin2 = 7;
 const int Pin3 = 8;
@@ -87,12 +93,18 @@ void Step(int Steps, int direction)
 };// end of Step
  
 <<<<<<< HEAD
+<<<<<<< HEAD
 void DCU (int output) 
 /* This segment is used for all DCU applications.
 Not all only cases 0 - 3 will be used in this sketch. */
 =======
 void DCU (int output) //DCU segment
 >>>>>>> 524a6fe7590bef80402c05b8882018776bbc7a5b
+=======
+void DCU (int output) 
+/*Standard DCU segment to identify pin configurations
+Not all are used in this sketch*/
+>>>>>>> 88b98e863c57e10bf11d612aa3dff49f449ca280
 {
   switch (output) 
   {
