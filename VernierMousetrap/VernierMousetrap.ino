@@ -22,10 +22,10 @@ int StepValue;
 //the lines below are so that you can quickly change this code if you want to
 //use the DCU in the BTD1 connector for some reason.
 int DCUinBTD2=1;// change this to 0 if you want to use the DCU on BTD 1
-const int Pin1 = 2 +DCUinBTD2*4;
-const int Pin2 = 3 +DCUinBTD2*4;
-const int Pin3 = 4 +DCUinBTD2*4;
-const int Pin4 = 5 +DCUinBTD2*4;
+const int Pin1 = 6;
+const int Pin2 = 7;
+const int Pin3 = 8;
+const int Pin4 = 9;
 int photogate =2; //This is the input for a photogate on the BTD 1 connector
 int LEDpin =13;/// line for LED to turn on when photogate is blocked
 int output; //number sent to DCU
@@ -89,7 +89,9 @@ void Step(int Steps, int direction)
     } ;//end of for
 };// end of Step
  
-void DCU (int output) //DCU segment
+void DCU (int output) 
+/*Standard DCU segment to identify pin configurations
+Not all are used in this sketch*/
 {
   switch (output) 
   {
