@@ -7,8 +7,9 @@ bipolar) via a Vernier Digital Control Unit (DCU) connected to the second BTD
 connector.
 
 This sketch will continuously check the photogate and start the stepper
-motor rotating when the photogate is blocked.
-  
+motor rotating when the photogate is blocked. External power must be supplied
+to the DCU to drive the stepper motor.
+
 See www.vernier.com/arduino for more information.
  */
 
@@ -88,7 +89,7 @@ void Step(int Steps, int direction)
     } ;//end of for
 };// end of Step
  
-void DCU (int output)
+void DCU (int output) //DCU segment
 {
   switch (output) 
   {

@@ -31,7 +31,7 @@ void setup()
   Serial.println("Data Set");
   Serial.print("Time");//long name
   Serial.print("\t"); //tab character
-  Serial.println ("Force"); //long nanme, change to match sensor
+  Serial.println ("Force"); //long name, change to match sensor
   Serial.print ("t"); //short name 
   Serial.print("\t"); //tab character
   Serial.println("F");//short name, change to match sensor 
