@@ -244,3 +244,4 @@ float Thermistor(int Raw) //This function calculates temperature from ADC count
   Temp = 1 / (0.00102119 + (0.000222468 * Temp) + (0.000000133342 * Temp * Temp * Temp));
   Temp = Temp - 273.15;  // Convert Kelvin to Celsius                      
   return Temp;                                      // Return the Temperature
+}
