@@ -1,17 +1,22 @@
 /*
-VernierServo (v 2014.09)
+VernierServo (v 2014.12)
 Reads a Vernier analog (BTA) sensor connnected to pin A0 of the Arduino or the 
 BTA 1 connector. This sketch controls the arm on a servo motor in response to 
 this voltage from the sensor. The servo motor is assumed to be connected to 
 pin D9 of the Arduino. You can also connect to this line using the BTD 2 connector.
+This is an exception to our convention of reserving the BTD 2 connector for the 
+digital readout. The servo motors must be controlled by pin 9 on the RedBoard/Arduino.
   
 This sketch is a very slight modification of the Knob sketch included with the 
 Arduino 1.0.4 Examples.
   
 Note that if you have wired the BTD2 connector as we recommend on 
 www.vernier.com/arduino or if you are using a SparkFun Vernier Interface Shield,
-you can make the connection to proper line for the servo motor from DIO3 of the
+you can make the connection to proper line for the servo motor from DIO4 (pin 9) of the
 BTD2 connector (the pin closest to the tab). 
+
+There is currently a conflict that doesn't allow the Redboard to communicate
+correctly with a servo motor through the Digital Control Unit (DCU-BTA).
 */
 
 #include <Servo.h> 
