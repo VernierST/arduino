@@ -1,9 +1,10 @@
 /*
- VernierPhotogate (v 2013.11)
- Monitors a Vernier Photogate connected to BTD connector. 
+ VernierPhotogate (v 2014.12)
+ Monitors a Vernier Photogate connected to BTD 1 connector. 
 
-This sketch lists the time in microseconds and milliseconds since the
-program started running.
+This sketch lists the time that the photogate is blocked in 
+microseconds and milliseconds since the program started running.
+
 The reason for the two time units is that the microsecond counter overflow 
 fairly frequently. Use whichever time you like in your versions of this.
   
@@ -30,9 +31,10 @@ void setup()
     Serial.print("\t"); // tab character
     Serial.println ("microseconds");
   };// end of setup
+  
 void loop ()
 {
-  Photogate = digitalRead(PhotogatePin);//low when pressed
+  Photogate = digitalRead(PhotogatePin);//low when blocked
    if (Photogate == LOW)
    { 
     digitalWrite(LEDpin, HIGH);// turn on LED

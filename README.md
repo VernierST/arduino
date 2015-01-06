@@ -8,4 +8,10 @@ Vernier has always supported hands-on, do-it-yourself projects for students (or 
 
 All sketches are developed by Vernier.
 
+License
+-------
+
+This projected is licensed under the terms of the [MIT license][2].
+
 [1]: http://www.vernier.com/arduino/
+[2]: http://opensource.org/licenses/MIT

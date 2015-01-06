@@ -1,5 +1,5 @@
 /*
-VernierFrequency (v 2013.11)
+VernierFrequency (v 2014.09)
 
 This sketch produces a tone on a speaker connected to pin D9 of
 the Arduino. It is based on the Tone 2 tutorial.
@@ -7,7 +7,7 @@ the Arduino. It is based on the Tone 2 tutorial.
 
 Note that you do not deal with calibration here. Any Vernier
 Analog sensor which uses the Sig1 (0 to 5 volt) line will work
-if it is plugged into the BTA connector.
+if it is plugged into the BTA 1 connector.
 
 If you want to change the range of frequencies, change the last two
 numbers in the line:  
@@ -20,6 +20,8 @@ from the sensor.
 See www.vernier.com/arduino for details.
 
 */
+int OutputPin=9;
+
 void setup() 
 {
   // initialize serial communications (for debugging only):
@@ -38,7 +40,7 @@ void loop() {
   int thisPitch = map(sensorReading, 400, 1000, 120, 1500);
 
   // play the pitch:
-  tone(9, thisPitch, 10);
+  tone(OutputPin, thisPitch, 10);
   delay(1);        // delay in between reads for stability
 }
 

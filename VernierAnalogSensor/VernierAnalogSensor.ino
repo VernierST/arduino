@@ -1,5 +1,5 @@
 /*
-VernierAnalogSensor (v 2013.11)
+VernierAnalogSensor (v 2014.09)
 Reads a Vernier analog (BTA) Sensor connected to pin A0 of the Arduino. 
 This sketch displays the time and sensor readings on the Serial Monitor. 
 As written, the readings will be displayed every half second. 
@@ -7,18 +7,14 @@ Change the variable TimeBetweenReadings to change the rate.
 
  See www.vernier.com/arduino for more information.
 */
-float Count;
-float Voltage;
-float SensorReading;
-int TimeBetweenReadings = 500; // in ms
-int ReadingNumber=0;
-float Time;
+
 ////////////////////////////////////////
 // This is the information on the sensor being used. 
 //See the www.vernier.com/products/sensors.
 char Sensor[]="Hand Dynamometer";
 float Intercept = -19.295;
 float Slope = 175.416;
+int TimeBetweenReadings = 500; // in ms
 /////////////////////////////////////////
 void setup() 
 {
@@ -28,19 +24,27 @@ void setup()
   Serial.print(" ");
   Serial.println("Readings taken using Ardunio");
   Serial.println("Data Set");
-  Serial.print("Time");
+  Serial.print("Time");//long name
   Serial.print("\t"); //tab character
   Serial.println ("Force"); //change to match sensor
-  Serial.print("seconds");
+  Serial.print("t");//short name
+  Serial.print("\t"); //tab character
+  Serial.println ("F"); //short name, change to match sensor 
+  Serial.print("seconds");//units
   Serial.print("\t"); // tab character
   Serial.println ("newtons"); //change to match sensor
 }
 void loop() 
 {
-  //the print below does the division first to avoid overflows
+  float Count;
+float Voltage;
+float SensorReading;
+int ReadingNumber=0;
+float Time;
+//the print below does the division first to avoid overflows
   Serial.print(ReadingNumber/1000.0*TimeBetweenReadings); 
   Count = analogRead(A0);
-  Voltage = Count / 1024 * 5.0;// convert from count to raw voltage
+  Voltage = Count / 1023 * 5.0;// convert from count to raw voltage
   SensorReading= Intercept + Voltage * Slope;
   Serial.print("\t"); // tab character
   Serial.println(SensorReading);

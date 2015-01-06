@@ -1,13 +1,15 @@
 /*
-VernierMousetrap (v 2013.11)
-Controls a stepper motor (unipolar or bipolar) via a Vernier Digital
-Control Unit (DCU) connected to the first BTD connector.
+VernierMousetrap (v 2014.09)
 
-A Vernier Photogate should also be connnected to the second BTD connector. 
+A Vernier Photogate should also be connnected to the second BTD 1 connector.
+The sketch monitors this photogate and Controls a stepper motor (unipolar or 
+bipolar) via a Vernier Digital Control Unit (DCU) connected to the BTD 2 
+connector.
 
 This sketch will continuously check the photogate and start the stepper
-motor rotating when the photogate is blocked.
-  
+motor rotating when the photogate is blocked. External power must be supplied
+to the DCU to drive the stepper motor.
+
 See www.vernier.com/arduino for more information.
  */
 
@@ -17,13 +19,21 @@ int Steps = 55; //number of steps to take
 int Direction =0;//direction 0 =CW
 int x;
 int StepValue;
-const int Pin1 = 2; // pin
-const int Pin2 = 3; // pin
-const int Pin3 = 4; // pin
-const int Pin4 = 5; // pin
-int photogate =3; //
+<<<<<<< HEAD
+=======
+//the lines below are so that you can quickly change this code if you want to
+//use the DCU in the BTD1 connector for some reason.
+int DCUinBTD2=1;// change this to 0 if you want to use the DCU on BTD 1
+>>>>>>> 88b98e863c57e10bf11d612aa3dff49f449ca280
+const int Pin1 = 6;
+const int Pin2 = 7;
+const int Pin3 = 8;
+const int Pin4 = 9;
+int photogate =2; //This is the input for a photogate on the BTD 1 connector
+int LEDpin =13;/// line for LED to turn on when photogate is blocked
 int output; //number sent to DCU
 int DCUStep[4]; //pattern used to drive stepper motor
+
 void setup() 
 {
   Serial.begin(9600); // set up Serial library at 9600 bps
@@ -32,31 +42,40 @@ void setup()
   pinMode(Pin3, OUTPUT);
   pinMode(Pin4, OUTPUT);
 };// end of setup
+
 void loop ()
 {
-buttonPress = digitalRead(photogate);//low when blocked
+    Serial.println(" starting loop ");
+    buttonPress = digitalRead(photogate);//low when blocked
 if (buttonPress == LOW) 
    { 
-     Step(55,0) ;// use stepper motor to lower door
-     Serial.print(buttonPress);
-     Serial.println("  Blocked ");
+    digitalWrite(LEDpin, HIGH);// turn on LED 
+    Serial.print(buttonPress);
+    Serial.println("  Blocked ");
+    Step(55,0) ;// use stepper motor to lower door
+    DCU(0);//Turn off all lines
+    delay (10000); //wait 10 seconds, note that the Arduino/shield LED will stay on
+    digitalWrite(LEDpin, LOW);// turn off Arduino/shield LED  when ready to trap again
    }
-DCU(0);//Turn off all lines
-delay (10000);
+   else
+   {
+     DCU(0);//Turn off all lines
+     digitalWrite(LEDpin, LOW);// turn off LED 
+   }
 } ;// end of loop
  
 void Step(int Steps, int direction)
  {
    if (direction ==0)
      {
-      DCUStep[0]=5;//,9,10,6}; //on this order for CW
+      DCUStep[0]=5;// 5,9,10,6}, in this order for CW rotation
       DCUStep[1]=9;
       DCUStep[2]=10;
       DCUStep[3]=6; 
      }
     else
      {
-       DCUStep[0]=6;//,9,10,6}; //on this order for CW
+       DCUStep[0]=6;// 6,9,10,6}; //on this order for CCW
        DCUStep[1]=10;
        DCUStep[2]=9;
        DCUStep[3]=5; 
@@ -73,7 +92,19 @@ void Step(int Steps, int direction)
     } ;//end of for
 };// end of Step
  
-void DCU (int output)
+<<<<<<< HEAD
+<<<<<<< HEAD
+void DCU (int output) 
+/* This segment is used for all DCU applications.
+Not all only cases 0 - 3 will be used in this sketch. */
+=======
+void DCU (int output) //DCU segment
+>>>>>>> 524a6fe7590bef80402c05b8882018776bbc7a5b
+=======
+void DCU (int output) 
+/*Standard DCU segment to identify pin configurations
+Not all are used in this sketch*/
+>>>>>>> 88b98e863c57e10bf11d612aa3dff49f449ca280
 {
   switch (output) 
   {
@@ -152,24 +183,24 @@ void DCU (int output)
     case 12:
       digitalWrite(Pin1, LOW);
       digitalWrite(Pin2, LOW);
-      digitalWrite(Pin3, HIGH);
-      digitalWrite(Pin4, HIGH);
+      digitalWrite(Pin3, LOW);
+      digitalWrite(Pin4, LOW);
       break;
     case 13:
-      digitalWrite(Pin1, HIGH);
+      digitalWrite(Pin1, LOW);
       digitalWrite(Pin2, LOW);
       digitalWrite(Pin3, HIGH);
-      digitalWrite(Pin4, HIGH);
+      digitalWrite(Pin4, LOW);
       break;
     case 14:
       digitalWrite(Pin1, LOW);
-      digitalWrite(Pin2, HIGH);
+      digitalWrite(Pin2, LOW);
       digitalWrite(Pin3, HIGH);
-      digitalWrite(Pin4, HIGH);
+      digitalWrite(Pin4, LOW);
       break;
     case 15:
-      digitalWrite(Pin1, HIGH);
-      digitalWrite(Pin2, HIGH);
+      digitalWrite(Pin1, LOW);
+      digitalWrite(Pin2, LOW);
       digitalWrite(Pin3, HIGH);
       digitalWrite(Pin4, HIGH);
       break;

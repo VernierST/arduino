@@ -1,4 +1,4 @@
-/*VernierLaserTracker  (v 2013.11)
+/*VernierLaserTracker  (v 2014.4)
 Monitors the position of an object using a Vernier Motion Detector
 and then aims a laser pointer mounted on a servo motor at the object.
 
@@ -15,7 +15,7 @@ long Duration; // time it take echo to return
 const int SpeedOfSound = 344; //in m/s
 double Distance;// in centimeters
 int val = 0;
-const int TriggerPin = 4; //trigger pin
+const int TriggerPin = 3; //trigger pin
 const int EchoPin = 2;// echo pin
 int Range=100; //distance in cm from Laser Pointer/Servo motor to Motion Detector
 void setup() 
@@ -69,7 +69,7 @@ void loop()
   Serial.println(Degrees);
   ServoSetting =Degrees;
   myservo.write(ServoSetting); // sets the servo position according to the scaled value                           
-  delay(50); //delay a second
+  delay(50); //delay a bit
 }
 
 
