@@ -1,7 +1,7 @@
 /*
-VernierDCU  (v 2013.11)
-Controls the Vernier Digital Control Unit (DCU) connected to BTD connector. The 
-DCU lines for BTA 1 are wired to pins 2, 3, 4, and 5.
+VernierDCU  (v 2014.06)
+Controls the Vernier Digital Control Unit (DCU) connected to BTD 2 connector. The 
+DCU lines for BTD 2 are wired to Arduino pins 6, 7, 8, and 9.
 
 This sketch goes through the 16 possible DCU output states, holding each for
 one second.
@@ -10,10 +10,13 @@ See www.vernier.com/arduino for more information.int
 
 */
 int Duration=1000; //step time in ms
-const int Pin1 = 2;
-const int Pin2 = 3; 
-const int Pin3 = 4;
-const int Pin4 = 5; 
+//the lines below are so that you can quickly change this code if you want to
+//use the DCU in the BTD1 connector for some reason.
+int DCUinBTD2=1;// change this to 0 if you want to use the DCU on BTD 1
+const int Pin1 = 2 +DCUinBTD2*4;
+const int Pin2 = 3 +DCUinBTD2*4;
+const int Pin3 = 4 +DCUinBTD2*4;
+const int Pin4 = 5 +DCUinBTD2*4;
 int output; //number sent to DCU
 void setup() {
   Serial.begin(9600);           // set up Serial library at 9600 bps

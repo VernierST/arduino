@@ -1,5 +1,5 @@
 /*
-VernierMotionDetector (v 2013.11)
+VernierMotionDetector (v 2014.09)
 Takes data from a Vernier Motion Detector connected to BTD connector.
 
 This sketch measures the time taken for the ultrasound to return (in microseconds)
@@ -18,14 +18,9 @@ Change the delay at the end of the loop to change the rate.
   
 See www.vernier.com/arduino for more information.
  */
-
-long time;// clock reading in microseconds
-long Duration; // time it take echo to return
-const float SpeedOfSound = 340; //in m/s
-float Distance;// in centimeters
-int val = 0;
 const int TriggerPin = 3; //trigger pin
 const int EchoPin = 2;// echo pin
+
 void setup() 
 {
   // initialize the Ping pin as an output:
@@ -36,15 +31,23 @@ void setup()
   Serial.println("Vernier Format 2");
   Serial.println("Motion Detector Readings taken using Ardunio");
   Serial.println("Data Set");
-  Serial.print("Time for Echo");
+  Serial.print("Time for Echo");//long name
   Serial.print("\t"); //tab character
-  Serial.println ("Distance"); //change to match sensor
-  Serial.print("seconds");
+  Serial.println ("Distance"); //long name
+  Serial.print("delta t");//short name
+  Serial.print("\t"); //tab character
+  Serial.println ("D"); //short name
+  Serial.print("seconds");//units
   Serial.print("\t"); // tab character
-  Serial.println ("centimeters"); //change to match sensor
+  Serial.println ("centimeters"); //units
 }
 void loop() 
 {
+  long time; // clock reading in microseconds
+  long Duration; // time it take echo to return
+  const float SpeedOfSound = 340; //in m/s
+  float Distance;// in centimeters
+  int val = 0;
   digitalWrite(TriggerPin, LOW);
   delayMicroseconds(4000);
   digitalWrite(TriggerPin, HIGH); // start the ultrasound pulse
