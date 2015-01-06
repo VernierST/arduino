@@ -59,9 +59,9 @@ void loop()
   Time = (ReadingNumber/1000.0*TimeBetweenReadings);
   Serial.print(Time); // print time in seconds
   Serial.print("\t"); //tab character
-  Serial.println(encoderPos*res);   // display temperature to one digit                                
-  delay(TimeBetweenReadings); 
-  ReadingNumber++;  // Delay a bit... 
+  Serial.println(encoderPos*res);   // display angle in degrees                               
+  delay(TimeBetweenReadings); // Delay a bit...
+  ReadingNumber++;   
 }
 
 void doEncoderCCW()
