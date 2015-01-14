@@ -20,7 +20,6 @@ of SparkFun Electronics
 The print function is used with the SoftwareSerial library
 to send display data to the S7S.
 Here is the wiring for display with a UART serial connection:
- 
    Arduino -------------- Serial 7-Segment
      5V   --------------------  VCC
      GND  --------------------  GND
