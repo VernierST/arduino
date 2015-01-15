@@ -9,8 +9,8 @@ This sketch supports  (but does not require) the Two-Line Display,
 sold by SparkFun as Serial Enabled 16x2 LCD display. See https://www.sparkfun.com/products/9395
 The display should be connected as follows:
 RX - Arduino Pin 9 (or pin 6 of the BTD 2 connector)
-GND -Arduino GND Pin (or pin 5 of the BTD 2 connector
-+5V - Arduino +5V Pin (or pin 4 of the BTD 2 connector
+GND -Arduino GND Pin (or pin 5 of the BTD 2 connector)
++5V - Arduino +5V Pin (or pin 4 of the BTD 2 connector)
 
 At startup, the program will list the Name, Units, and Calibration Page
 for the sensor. After a two second delay, the Short Name and the senscor 
