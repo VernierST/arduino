@@ -24,7 +24,6 @@ Here is the wiring for display with a UART serial connection:
      5V   --------------------  VCC
      GND  --------------------  GND
      13   --------------------  RX
-
  */
 #include <math.h>
 #include <SoftwareSerial.h>
