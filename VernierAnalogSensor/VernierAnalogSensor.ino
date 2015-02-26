@@ -15,6 +15,8 @@ char Sensor[]="Hand Dynamometer";
 float Intercept = -19.295;
 float Slope = 175.416;
 int TimeBetweenReadings = 500; // in ms
+int ReadingNumber=0;
+float Time;
 /////////////////////////////////////////
 void setup() 
 {
@@ -36,16 +38,12 @@ void setup()
 }
 void loop() 
 {
-  float Count;
-float Voltage;
-float SensorReading;
-int ReadingNumber=0;
-float Time;
+
 //the print below does the division first to avoid overflows
   Serial.print(ReadingNumber/1000.0*TimeBetweenReadings); 
-  Count = analogRead(A0);
-  Voltage = Count / 1023 * 5.0;// convert from count to raw voltage
-  SensorReading= Intercept + Voltage * Slope;
+  float Count = analogRead(A0);
+  float Voltage = Count / 1023 * 5.0;// convert from count to raw voltage
+  float SensorReading= Intercept + Voltage * Slope; //converts voltage to sensor reading
   Serial.print("\t"); // tab character
   Serial.println(SensorReading);
   delay(TimeBetweenReadings);// delay in between reads for stability
