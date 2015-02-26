@@ -29,7 +29,7 @@ Here is the wiring for display with a UART serial connection:
 #include <SoftwareSerial.h>
 // These are the Arduino pins required to create a software seiral
 //  instance. We'll actually only use the TX pin.
-const int softwareTx = 13;
+const int softwareTx = 9;
 const int softwareRx = 7;
 SoftwareSerial s7s(softwareRx, softwareTx);
 char tempString[10];  // Will be used with sprintf to create strings	
