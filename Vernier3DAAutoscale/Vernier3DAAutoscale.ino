@@ -10,7 +10,7 @@ The brightness of the red LED is controlled by the x axis acceleration.
 The brightness of the green LED is controlled by the y axis acceleration.
 The brightness of the blue LED is controlled by the z axis acceleration.
 
-During the first 10 seconds of this program you should rotate the 
+During the first 15 seconds of this program you should rotate the 
 accelerometer through all 3 axes. This will calibrate the signal for
 you specific accelerometer. All LEDs will flash for 1 second at the beginning 
 and end of this "calibration".
@@ -67,7 +67,7 @@ void loop()
   analogWrite(BluePin, 0);
   delay (10);}
   
-  while (time>1000 && time < 11000){ // Time to calibrate each sensor to it's particular range of values.
+  while (time>1000 && time < 16000){ // Time to calibrate each sensor to it's particular range of values.
   time = millis();
    //Red
     analogValue = analogRead(sensorPinRed);
@@ -91,7 +91,7 @@ void loop()
     Serial.println(analogValue, DEC);
     delay (20);
   }
-  while(time > 11000 && time < 12000){// LEDs to flash at finish of calibration 
+  while(time > 16000 && time < 17000){// LEDs to flash at finish of calibration 
   time = millis();
   analogWrite(RedPin, 255);
   analogWrite(GreenPin, 255);

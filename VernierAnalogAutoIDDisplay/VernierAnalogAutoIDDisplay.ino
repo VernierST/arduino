@@ -9,8 +9,8 @@ This sketch supports  (but does not require) the Two-Line Display,
 sold by SparkFun as Serial Enabled 16x2 LCD display. See https://www.sparkfun.com/products/9395
 The display should be connected as follows:
 RX - Arduino Pin 9 (or pin 6 of the BTD 2 connector)
-GND -Arduino GND Pin (or pin 5 of the BTD 2 connector
-+5V - Arduino +5V Pin (or pin 4 of the BTD 2 connector
+GND -Arduino GND Pin (or pin 5 of the BTD 2 connector)
++5V - Arduino +5V Pin (or pin 4 of the BTD 2 connector)
 
 At startup, the program will list the Name, Units, and Calibration Page
 for the sensor. After a two second delay, the Short Name and the senscor 
@@ -275,7 +275,7 @@ void loop()
   if (VoltageID>1.18 & VoltageID<1.30) SensorNumber = 4; //Reistance 
   if (VoltageID>3.27 & VoltageID<3.68) SensorNumber = 5; //Extra-Long Temperature Probe
   if (VoltageID>4.64 & VoltageID<4.73) SensorNumber = 8; //Differential Voltage
-  if (VoltageID>4.73 & VoltageID<4.83) SensorNumber = 9; //Current
+  if (VoltageID>4.73 & VoltageID<4.82) SensorNumber = 9; //Current
   if (VoltageID>2.38 & VoltageID<2.63) SensorNumber = 10; //Stainless Steel or Surface Temperature Probe
   if (VoltageID>2.85 & VoltageID<3.15) SensorNumber = 11; // Voltage 30 V
   if (VoltageID>1.52 & VoltageID<1.68) SensorNumber = 12; //TILT, TI Light Sensor

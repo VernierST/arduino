@@ -20,18 +20,16 @@ of SparkFun Electronics
 The print function is used with the SoftwareSerial library
 to send display data to the S7S.
 Here is the wiring for display with a UART serial connection:
- 
    Arduino -------------- Serial 7-Segment
      5V   --------------------  VCC
      GND  --------------------  GND
      13   --------------------  RX
-
  */
 #include <math.h>
 #include <SoftwareSerial.h>
 // These are the Arduino pins required to create a software seiral
 //  instance. We'll actually only use the TX pin.
-const int softwareTx = 13;
+const int softwareTx = 9;
 const int softwareRx = 7;
 SoftwareSerial s7s(softwareRx, softwareTx);
 char tempString[10];  // Will be used with sprintf to create strings	
