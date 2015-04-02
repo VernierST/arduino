@@ -20,7 +20,7 @@ const int Pin4 = 5 +DCUinBTD2*4;
 int output; //number sent to DCU
 void setup() {
   Serial.begin(9600);           // set up Serial library at 9600 bps
-  Serial.println("Stepper test!");
+  Serial.println("DCU Main Cycle");
   pinMode(Pin1, OUTPUT);
   pinMode(Pin2, OUTPUT);
   pinMode(Pin3, OUTPUT);
