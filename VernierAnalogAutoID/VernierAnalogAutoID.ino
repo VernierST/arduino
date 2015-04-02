@@ -1,10 +1,11 @@
 /*
-VernierAnalogAutoID (v 2013.12)
+VernierAnalogAutoID (v 2015.04)
 Reads the information to AutoID a Vernier BTA sensor with digital AutoID,
 and resistor ID sensors including Vernier Stainless Steel Temperature Probe (TMP-BTA). 
 It should read the +/-10 volt Voltage Probe correctly also.
 This version does all tests for resistorID sensors first, then
-turns on the I2C clock and tests for digital autoID sensors.)
+turns on the I2C clock and tests for digital autoID sensors. After that,
+it turns off the I2C communications.
 
 Note that this sketch handles multiple pages of sensor calibrations.
 
@@ -17,8 +18,15 @@ Assuming Vernier analog (BTA) Sensors are connected to the BTA connectors,
 this sketch displays the time and sensor readings on the Serial Monitor.
 As written, the readings will be displayed every second. 
 Change the variable TimeBetweenReadings to change the rate.
+
+The changes in the 2015.04 version are:
+  - fixed bug which lead to incorrect readings of analog sensors in BTA2 
+    connector because I2C lines affected the readings
+  - minor changes to the voltage thresholds on resistor ID section
+  
  See www.vernier.com/arduino for more information.
 */
+
 int ReadingNumber;
 int Channel; //BTA (Channel 1 or 2) 
 float VoltageID[5];
@@ -50,7 +58,7 @@ void setup()
     digitalWrite(led, LOW);   
     pinMode(muxlsb, OUTPUT); 
     pinMode(muxmsb, OUTPUT); 
-    device =0x50;
+
     Serial.println(""); 
     //Read BTA1 Sensor
     digitalWrite(muxlsb, LOW); //set multiplexer for BTA1   
@@ -74,7 +82,9 @@ void setup()
     digitalWrite(muxmsb, LOW);  
     Channel=2;  
     if (SensorNumber[Channel]==0) DigitalSensorID( Channel);// if no resistorID, check for digital ID
-    PrintSensorInfo();// this line can be commented out if you do not need all this info
+    pinMode(A4, INPUT); //Turn off the I2C communication
+    pinMode(A5, INPUT); 
+    PrintSensorInfo();// this line can be commented out if you do not need all this info!!!
     Serial.println(" ");    
     Serial.println("Vernier Format 2");
     Serial.println("Readings taken using Ardunio");
@@ -144,20 +154,20 @@ void BTAResistorSensorID(int Channel)
   delay (10);
   int CountID = analogRead(A5);
   VoltageID[Channel] = CountID / 1024.0 * VCC;// convert from count to voltage 
-  if (VoltageID[Channel]>0.86 & VoltageID[Channel]<0.95) SensorNumber[Channel] = 1; 
-  if (VoltageID[Channel]>3.80 & VoltageID[Channel]<3.88) SensorNumber[Channel] = 2; // Voltage +/-10 V
-  if (VoltageID[Channel]>1.92 & VoltageID[Channel]<2.13) SensorNumber[Channel] = 3; 
-  if (VoltageID[Channel]>1.18 & VoltageID[Channel]<1.30) SensorNumber[Channel] = 4;  
-  if (VoltageID[Channel]>3.27 & VoltageID[Channel]<3.68) SensorNumber[Channel] = 5;  
+  if (VoltageID[Channel]>0.86 & VoltageID[Channel]<0.95) SensorNumber[Channel] = 1; //Thermocouple
+  if (VoltageID[Channel]>3.83 & VoltageID[Channel]<3.86) SensorNumber[Channel] = 2; // Voltage +/-10 V
+  if (VoltageID[Channel]>1.92 & VoltageID[Channel]<2.13) SensorNumber[Channel] = 3; // TI Current Probe (not used)
+  if (VoltageID[Channel]>1.18 & VoltageID[Channel]<1.30) SensorNumber[Channel] = 4; //Reistance 
+  if (VoltageID[Channel]>3.27 & VoltageID[Channel]<3.68) SensorNumber[Channel] = 5; //Extra-Long Temperature Probe  
   if (VoltageID[Channel]>4.64 & VoltageID[Channel]<4.73) SensorNumber[Channel] = 8; //Differential Voltage
   if (VoltageID[Channel]>4.73 & VoltageID[Channel]<4.83) SensorNumber[Channel] = 9; //Current
   if (VoltageID[Channel]>2.38 & VoltageID[Channel]<2.63) SensorNumber[Channel] = 10; //Stainless Steel or Surface Temperature Probe
-  if (VoltageID[Channel]>2.85 & VoltageID[Channel]<3.15) SensorNumber[Channel] = 11;   
-  if (VoltageID[Channel]>1.52 & VoltageID[Channel]<1.68) SensorNumber[Channel] = 12; //TILT
-  if (VoltageID[Channel]>0.43 & VoltageID[Channel]<0.48) SensorNumber[Channel] = 13; 
-  if (VoltageID[Channel]>4.08 & VoltageID[Channel]<4.16) SensorNumber[Channel] = 14; 
-  if (VoltageID[Channel]>0.62 & VoltageID[Channel]<0.68) SensorNumber[Channel] = 15; 
-  if (VoltageID[Channel]>4.32 & VoltageID[Channel]<4.40) SensorNumber[Channel] = 17; 
+  if (VoltageID[Channel]>2.85 & VoltageID[Channel]<3.15) SensorNumber[Channel] = 11; // Voltage 30 V  
+  if (VoltageID[Channel]>1.52 & VoltageID[Channel]<1.68) SensorNumber[Channel] = 12; //TILT, TI Light Sensor
+  if (VoltageID[Channel]>0.43 & VoltageID[Channel]<0.48) SensorNumber[Channel] = 13; //Exercise Heart Rate
+  if (VoltageID[Channel]>4.08 & VoltageID[Channel]<4.16) SensorNumber[Channel] = 14; //Raw Voltage
+  if (VoltageID[Channel]>0.62 & VoltageID[Channel]<0.68) SensorNumber[Channel] = 15; //EKG
+  if (VoltageID[Channel]>4.32 & VoltageID[Channel]<4.40) SensorNumber[Channel] = 17; //CO2 
   if (VoltageID[Channel]>4.50 & VoltageID[Channel]<4.59) SensorNumber[Channel] = 18; //Oxygen
   switch (SensorNumber[Channel]) 
    {
