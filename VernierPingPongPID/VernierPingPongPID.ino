@@ -74,12 +74,15 @@ void setup()
   Serial.print("\t");
   Serial.print ("D"); //short name
   Serial.print("\t");
+  Serial.print("\t");
   Serial.println("0 - 255");
   Serial.print("micro seconds");//units
   Serial.print("\t"); // tab character
-  Serial.print ("centimeters"); //units
+  Serial.print ("cm"); //units
   Serial.print("\t"); // tab character
-  Serial.print ("centimeters"); //units
+  Serial.print("\t");
+  Serial.print ("cm"); //units
+  Serial.print("\t");
   Serial.print("\t");
   Serial.println("#");
   // This would be the end of the grayed out portion if using VPython
@@ -115,10 +118,13 @@ void loop()
   //* Grayed out for python connection
   Serial.print(Duration);// print the time it took until the echo
   Serial.print("\t"); // tab character
+  Serial.print("\t");
   Serial.print(Setpoint);
   Serial.print("\t"); // tab character
+  Serial.print("\t");
   // This would be the end of the grayed out portion
-  Serial.println(Distance);
+  Serial.print(Distance);
+  Serial.print("\t");
   Serial.print("\t"); //tab character
   Serial.println(Output);
   delay (100);
