@@ -27,7 +27,7 @@ Here is the wiring for display with a UART serial connection:
  */
 #include <math.h>
 #include <SoftwareSerial.h>
-// These are the Arduino pins required to create a software seiral
+// These are the Arduino pins required to create a software serial
 //  instance. We'll actually only use the TX pin.
 const int softwareTx = 9;
 const int softwareRx = 7;

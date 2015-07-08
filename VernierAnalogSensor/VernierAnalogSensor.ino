@@ -16,7 +16,7 @@ float Intercept = -19.295;
 float Slope = 175.416;
 int TimeBetweenReadings = 500; // in ms
 int ReadingNumber=0;
-float Time;
+
 /////////////////////////////////////////
 void setup() 
 {
@@ -38,6 +38,7 @@ void setup()
 }
 void loop() 
 {
+float Time;
 
 //the print below does the division first to avoid overflows
   Serial.print(ReadingNumber/1000.0*TimeBetweenReadings); 
