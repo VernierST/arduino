@@ -1,5 +1,5 @@
 /*
-VernierAnalogVoltage (v 2014.09)
+VernierAnalogVoltage (v 2015.06)
 Reads a Vernier analog (BTA) sensor connected to pin A0 of the Arduino. This
 sketch displays the raw voltage reading on the Serial Monitor. As written, the 
 reading will be displayed every half second. Change the variable TimeBetweenReadings
@@ -7,6 +7,7 @@ to change the rate.
   
 See www.vernier.com/arduino for more information.
  */
+int ReadingNumber=0;
 int TimeBetweenReadings = 500;
 void setup() {
   // initialize serial communication at 9600 bits per second:
@@ -17,7 +18,7 @@ void loop() {
 float Count;
 float Voltage;
 float SensorReading;
-int ReadingNumber=0;
+
 float Time;//the print below does the division first to avoid overflows
   Serial.print(ReadingNumber/1000.0*TimeBetweenReadings); 
   Count = analogRead(A0);
