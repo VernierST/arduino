@@ -24,7 +24,7 @@ This sketch also handles the two analog sensors that use the +/-10 Volt input li
 30V-BTA).
 
 This version reads the A-to-D converter many times quickly and averages readings to average out
-noise. You can change the amount of averaging by changing the integer, numberAveraged, in the loop.
+noise. You can change the amount of averaging by changing the integer "numberAveraged" in the loop.
 
 Note that this sketch handles multiple pages of sensor calibrations.
 

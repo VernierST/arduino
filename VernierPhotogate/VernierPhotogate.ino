@@ -48,7 +48,7 @@ void loop ()
           Serial.println(Timeus);
            }
    }
-   else digitalWrite(LEDpin, LOW);// turn on LED
+   else digitalWrite(LEDpin, LOW);// turn off LED
    status = Photogate;
  } ;// end of loop
 

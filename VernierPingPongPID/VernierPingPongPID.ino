@@ -47,8 +47,8 @@ void setup()
   // initialize the Ping pin as an output:
   pinMode(TriggerPin, OUTPUT);
   pinMode(EchoPin, INPUT); //this is the pin that goes high when an echo is received
-    //initialize the variables we're linked to
-    Setpoint = 30; // setpoint (cm from top)
+   
+  Setpoint = 30; // setpoint (cm from top)
 
   //turn the PID on
   myPID.SetMode(AUTOMATIC);
