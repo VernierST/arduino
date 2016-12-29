@@ -1,5 +1,5 @@
 /*
-VernierAnalogAutoIDDisplay (v 2015.10)
+VernierAnalogAutoIDDisplay (v 2016.10)
 Reads the information to AutoID any Vernier BTA sensor connected to the BTA 1 connector
 on the Vernier Interface Shield. it will also work with homemade, breadboard connections
 if all the lines are connected so AutoID can work. This sketch handles sensors with
@@ -23,8 +23,17 @@ displayed briefly before the sensor readings appear.
 This sketch also handles the two analog sensors that use the +/-10 Volt input line (VP-BTA and
 30V-BTA).
 
+This version supports non-linear sensors in special case If Statements. The non-linear sensor supported are:
+thermistor temperture probe(10), Steinhart-Hart Equation
+Wide Range Tempeature Sensor(78), reading = Intercept + Voltage * Slope + cfactor * Voltage * Voltage;
+Ethanol Sensor(97), reading = Intercept * pow(Voltage, Slope)
+Sound Level Sensor(118), reading = Intercept + Voltage * Slope + cfactor * Voltage * Voltage;
+Melt Station(92), reading = Intercept + Voltage * Slope + cfactor * Voltage * Voltage;
+ISEs, CA(38), NH4(39), NO3(40), Cl(41), Potasium(113) mV = (137.55 * Voltage - 0.1682);
+New (Oct. 2016 Thermocouple(123), reading = Intercept + Voltage * Slope + cfactor * Voltage * Voltage;
+
 This version reads the A-to-D converter many times quickly and averages readings to average out
-noise. You can change the amount of averaging by changing the integer "numberAveraged" in the loop.
+noise. You can change the amount of averaging by changing the integer, numberAveraged, in the loop.
 
 Note that this sketch handles multiple pages of sensor calibrations.
 
@@ -310,7 +319,9 @@ void loop()
 	//Special calibration for ISEs, CA(38), NH4(39), NO3(40), Cl(41):
 	if  (SensorNumber > 37 && SensorNumber < 42) SensorReading = (137.55 * Voltage - 0.1682);
 	//Special calibration for Potasium(113) ISE:
-	if  (SensorNumber == 113) SensorReading = (137.55 * Voltage - 0.1682);
+	if  (SensorNumber == 113) SensorReading = (137.55 * Voltage - 0.1682);//Potasium ISE
+  if  (SensorNumber == 123) SensorReading = Intercept + Voltage * Slope + cfactor * Voltage * Voltage;
+  //Special quadratic calibration for New (Oct. 2016 Thermocouple(123));
 	mySerial.write(254); // command character
 	mySerial.write(192); // move to line 2, position 0,
 	mySerial.print("   "); // print some text
