@@ -1,6 +1,6 @@
 /*
 VernierServo (v 2015.04)
-Reads a Vernier analog (BTA) sensor connnected to pin A0 of the Arduino or the 
+Reads a Vernier analog (BTA) sensor connected to pin A0 of the Arduino or the 
 BTA 1 connector. This sketch controls the arm on a servo motor in response to 
 this voltage from the sensor. The servo motor is assumed to be connected to 
 pin D9 of the Arduino. You can also connect to this line using the BTD 2 connector.
