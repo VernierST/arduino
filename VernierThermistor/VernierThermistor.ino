@@ -1,5 +1,5 @@
 /*
-VernierThermistor (v 2014.09)
+VernierThermistor (v 2017.07)
 Reads the temperature from a Vernier Stainless Steel Temperature Probe (TMP-BTA)
 or Surface Temperature Sensor (STS-BTA) connected to the BTA 1 connector. 
 As written, the readings will be displayed every half second. Change the variable 
@@ -15,9 +15,9 @@ for more information on how thermistors are read.
 See www.vernier.com/arduino for more information.
  */
 #include <math.h>
-int ThermistorPIN =0;// Analog Pin 0
-int TimeBetweenReadings = 500; // in ms
-int ReadingNumber=0;
+int thermistorPIN =0;// Analog Pin 0
+int timeBetweenReadings = 500; // in ms
+int readingNumber=0;
 
 void setup() 
 {
@@ -37,19 +37,19 @@ void setup()
 }
 void loop() 
 {
-  float Time;
- int Count; //reading from the A/D converter (10-bit)
-  float Temp; //the print below does the division first to avoid overflows
-  Serial.print(ReadingNumber/1000.0*TimeBetweenReadings); 
-  Count=analogRead(ThermistorPIN);       // read count from the A/D converter 
-  Temp=Thermistor(Count);       // and  convert it to CelsiusSerial.print(Time/1000); //display in seconds, not milliseconds                       
+  float readingTime;
+  int count; //reading from the A/D converter (10-bit)
+  float temp; //the print below does the division first to avoid overflows
+  Serial.print(readingNumber/1000.0*timeBetweenReadings); 
+  count=analogRead(thermistorPIN);       // read count from the A/D converter 
+  temp=thermistor(count);       // and  convert it to CelsiusSerial.print(Time/1000); //display in seconds, not milliseconds                       
   Serial.print("\t"); //tab character
-  Serial.println(Temp,1);   // display temperature to one digit                                
-  delay(TimeBetweenReadings); // Delay a bit... 
-  ReadingNumber++;  
+  Serial.println(temp,1);   // display temperature to one digit                                
+  delay(timeBetweenReadings); // Delay a bit... 
+  readingNumber++;  
 }
 
-float Thermistor(int Raw) //This function calculates temperature from ADC count
+float thermistor(int raw) //This function calculates temperature from ADC count
 {
  /* Inputs ADC count from Thermistor and outputs Temperature in Celsius
  *  requires: include <math.h>
@@ -71,17 +71,17 @@ float Thermistor(int Raw) //This function calculates temperature from ADC count
  For the circuit above:
  * Resistance = ( Count*RawADC /(1024-Count))
  */
- long Resistance; 
- float Resistor = 15000; //fixed resistor
+ long resistance; 
+ float resistor = 15000; //fixed resistor
 // the measured resistance of your particular fixed resistor in
 // the Vernier BTA-ELV and in the SparkFun Vernier Adapter Shield 
 // is a precision 15K resisitor 
-  float Temp;  // Dual-Purpose variable to save space.
-  Resistance=( Resistor*Raw /(1024-Raw)); 
-  Temp = log(Resistance); // Saving the Log(resistance) so not to calculate  it 4 times later
-  Temp = 1 / (0.00102119 + (0.000222468 * Temp) + (0.000000133342 * Temp * Temp * Temp));
-  Temp = Temp - 273.15;  // Convert Kelvin to Celsius                      
-  return Temp;                                      // Return the Temperature
+  float temp;  // Dual-Purpose variable to save space.
+  resistance=( resistor*raw /(1024-raw)); 
+  temp = log(resistance); // Saving the Log(resistance) so not to calculate  it 4 times later
+  temp = 1 / (0.00102119 + (0.000222468 * temp) + (0.000000133342 * temp * temp * temp));
+  temp = temp - 273.15;  // Convert Kelvin to Celsius                      
+  return temp;                                      // Return the Temperature
 }
 
 
