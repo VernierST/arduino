@@ -1,5 +1,5 @@
 /*
-VernierFrequency (v 2014.09)
+VernierFrequency (v 2017.07)
 
 This sketch produces a tone on a speaker connected to pin D9 of
 the Arduino. It is based on the Tone 2 tutorial.
@@ -20,7 +20,7 @@ from the sensor.
 See www.vernier.com/arduino for details.
 
 */
-int OutputPin=9;
+int outputPin=9;
 
 void setup() 
 {
@@ -40,7 +40,7 @@ void loop() {
   int thisPitch = map(sensorReading, 400, 1000, 120, 1500);
 
   // play the pitch:
-  tone(OutputPin, thisPitch, 10);
+  tone(outputPin, thisPitch, 10);
   delay(1);        // delay in between reads for stability
 }
 
