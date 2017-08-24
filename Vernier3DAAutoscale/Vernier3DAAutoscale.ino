@@ -1,5 +1,5 @@
 /*
-Vernier3DA (v 2014.12)
+Vernier3DA (v 2017.08)
 This project assumes that you have a Vernier 3D Accelerometer connected to 
 three BTA connectors. It also assumes that you have an RGB LED connected to
 PWM outputs 3, 5, and 6.
@@ -12,16 +12,14 @@ The brightness of the blue LED is controlled by the z axis acceleration.
 
 During the first 15 seconds of this program you should rotate the 
 accelerometer through all 3 axes. This will calibrate the signal for
-you specific accelerometer. All LEDs will flash for 1 second at the beginning 
+you specific accelerometer. If you do not rotate the sensor it will
+default to set values. All LEDs will flash for 1 second at the beginning 
 and end of this "calibration".
 After calibration, each color should progress through a range of "off" to 
 full power based on the orientation of the accelerometer. Sitting flat on a 
 surface (z-axis up) is blue, flat on its side (y-axis up) is green, and cord
 facing down is red.
 Note that either individual LEDs or a RGB LED may be used.
-
-In order to experiment with 2 colors one of the LEDs must be disconnected from 
-the digital output (Redpin, Greenpin, or Bluepin).
 
 See www.vernier.com/arduino for more information.
 */
@@ -34,30 +32,28 @@ const int sensorPinGreen = A2;
 const int sensorPinBlue = A4;
 
 int var = 1;
-int minReadingRed = 750; // High value to force the minimum 
-int maxReadingRed = 0; // Low value to force the maximum
+int minReadingRed = 450; // Default value if no calibration 
+int maxReadingRed = 600; // Default value if no calibration
+int minReadingGreen = 450;
+int maxReadingGreen = 600;
+int minReadingBlue = 500;
+int maxReadingBlue = 830;
 
-int minReadingGreen = 750;
-int maxReadingGreen = 0;
- 
-int minReadingBlue = 750;
-int maxReadingBlue = 0;
-
-int analogValue = 0;
+int analogValueR = 0;
+int analogValueG = 0;
+int analogValueB = 0;
 int time;
 int analogOut; 
-int flash;
 
 void setup()
 { 
   Serial.begin(9600);  
-   Serial.println();
+
 } 
 void loop() 
 {
-  
   while (time < 1000){ // LEDs to flash at start of calibration 
-  time = millis();
+      time = millis();
   analogWrite(RedPin, 255);
   analogWrite(GreenPin, 255);
   analogWrite(BluePin, 255);
@@ -66,33 +62,27 @@ void loop()
   analogWrite(GreenPin, 0);
   analogWrite(BluePin, 0);
   delay (10);}
-  
-  while (time>1000 && time < 16000){ // Time to calibrate each sensor to it's particular range of values.
-  time = millis();
-   //Red
-    analogValue = analogRead(sensorPinRed);
-    maxReadingRed = max(analogValue, maxReadingRed);
-    minReadingRed = min(analogValue, minReadingRed);// This is the absolute min. We'll want midpoint
-    Serial.print("Analog Red "); 
-    Serial.print(analogValue, DEC);
-    delay (20);
+    while (time>1000 && time < 16000){ 
+        time = millis();
+    // Time to calibrate each sensor to it's particular range of values.
+    //Red
+    analogValueR = analogRead(sensorPinRed);
+    maxReadingRed = max(analogValueR, maxReadingRed);
+    minReadingRed = min(analogValueR, minReadingRed);// This is the absolute min. We'll adjust this up
     //Green
-    analogValue = analogRead(sensorPinGreen);
-    maxReadingGreen = max(analogValue, maxReadingGreen);
-    minReadingGreen = min(analogValue, minReadingGreen);// This is the absolute min. We'll want midpoint
-    Serial.print("   Analog Green "); 
-    Serial.print(analogValue, DEC);
-    delay (20);
+    analogValueG = analogRead(sensorPinGreen);
+    maxReadingGreen = max(analogValueG, maxReadingGreen);
+    minReadingGreen = min(analogValueG, minReadingGreen);// This is the absolute min. We'll adjust this up
     //Blue
-    analogValue = analogRead(sensorPinBlue);
-    maxReadingBlue = max(analogValue, maxReadingBlue);
-    minReadingBlue = min(analogValue, minReadingBlue);// This is the absolute min. We'll want midpoint    
-    Serial.print("   Analog Blue "); 
-    Serial.println(analogValue, DEC);
-    delay (20);
-  }
-  while(time > 16000 && time < 17000){// LEDs to flash at finish of calibration 
-  time = millis();
+    analogValueB = analogRead(sensorPinBlue);
+    maxReadingBlue = max(analogValueB, maxReadingBlue);
+    minReadingBlue = min(analogValueB, minReadingBlue);// This is the absolute min. We'll adjust this up 
+    }
+  while(time > 16000 && time < 17000){  // LEDs to flash at finish of calibration 
+      time = millis();
+    Serial.print(minReadingRed);
+    Serial.print("/t");
+    Serial.println(maxReadingRed);
   analogWrite(RedPin, 255);
   analogWrite(GreenPin, 255);
   analogWrite(BluePin, 255);
@@ -102,12 +92,11 @@ void loop()
   analogWrite(BluePin, 0);}
     
   while (var == 1){
-  
-  minReadingRed = minReadingRed+0.5*(maxReadingRed - minReadingRed); // Sets midpoint as minimum
-  minReadingGreen = minReadingGreen+0.5*(maxReadingGreen - minReadingGreen); 
-  minReadingBlue = minReadingBlue+0.5*(maxReadingBlue - minReadingBlue); 
-  
-  Serial.println();
+  minReadingRed = minReadingRed+0.25*(maxReadingRed - minReadingRed); // Adjusts minimum value (experiment with factor)
+  minReadingGreen = minReadingGreen+0.25*(maxReadingGreen - minReadingGreen); 
+  minReadingBlue = minReadingBlue+0.25*(maxReadingBlue - minReadingBlue); 
+
+  Serial.println();//prints range of each axis
   Serial.print("minReadingRed = " );
   Serial.print(minReadingRed, DEC);
   Serial.print("     maxReadingRed = " );
@@ -125,67 +114,37 @@ void loop()
   // Below is scrolling printout
   
   //Red
-  
-  analogValue = analogRead(sensorPinRed);
-  analogValue = constrain(analogValue, minReadingRed, maxReadingRed);
+  analogValueR = analogRead(sensorPinRed);
+  analogValueR = constrain(analogValueR, minReadingRed, maxReadingRed);
   Serial.print("analogValue Red = " ); 
-  Serial.print(analogValue);     
-  
-  analogOut = map(analogValue, minReadingRed, maxReadingRed, 0, 255);
+  Serial.println(analogValueR);     
+  analogOut = map(analogValueR, minReadingRed, maxReadingRed, 0, 255);
   analogOut = constrain(analogOut, 0, 255);  
   Serial.print(" scaled to " );
-  Serial.print(analogOut, DEC);
+  Serial.println(analogOut, DEC);
   analogWrite(RedPin, analogOut);
     
  //Green
-       
-  analogValue = analogRead(sensorPinGreen);
-  analogValue = constrain(analogValue, minReadingGreen, maxReadingGreen);
+  analogValueG = analogRead(sensorPinGreen);
+  analogValueG = constrain(analogValueG, minReadingGreen, maxReadingGreen);
   Serial.print("  Green = " ); 
-  Serial.print(analogValue);  
-  
-  analogOut = map(analogValue, minReadingGreen, maxReadingGreen, 0, 255);   
+  Serial.println(analogValueG);  
+  analogOut = map(analogValueG, minReadingGreen, maxReadingGreen, 0, 255);   
   analogOut = constrain(analogOut, 0, 255);  
   Serial.print(" scaled to " ); 
-  Serial.print(analogOut, DEC);
+  Serial.println(analogOut, DEC);
   analogWrite(GreenPin, analogOut);
   
-    //Blue
-  
-  analogValue = analogRead(sensorPinBlue);
-  analogValue = constrain(analogValue, minReadingBlue, maxReadingBlue);
+ //Blue
+  analogValueB = analogRead(sensorPinBlue);
+  analogValueB = constrain(analogValueB, minReadingBlue, maxReadingBlue);
   Serial.print("  Blue = " );  
-  Serial.print(analogValue); 
-  
-  analogOut = map(analogValue, minReadingBlue, maxReadingBlue, 0, 255);
+  Serial.println(analogValueB); 
+  analogOut = map(analogValueB, minReadingBlue, maxReadingBlue, 0, 255);
   analogOut = constrain(analogOut, 0, 255);
   Serial.print(" scaled to " );   
   Serial.println(analogOut, DEC);
   analogWrite(BluePin, analogOut);
   
-  delay (25);
-
-  /* TEST AREA ABOVE!! Don't delete below just yet!
-  //Red
-  analogValue = analogRead(sensorPinRed);
-  analogOut = map(analogValue, minReadingRed, maxReadingRed, 0, 255);
-  Serial.print("Red = " );                       
-  Serial.print(analogValue, DEC);
-  analogWrite(RedPin, analogOut);
-  
-  //Green
-  analogValue = analogRead(sensorPinGreen);
-  analogOut = map(analogValue, minReadingGreen, maxReadingGreen, 0, 255);
-  Serial.print("Green = " );                       
-  Serial.print(analogValue, DEC);
-  analogWrite(GreenPin, analogOut);
-  
-  //Blue
-  analogValue = analogRead(sensorPinBlue);
-  analogOut = map(analogValue, minReadingBlue, maxReadingBlue, 0, 255);
-  Serial.print("Blue = " );     
-  Serial.println(analogValue, DEC);
-  analogWrite(BluePin, analogOut);
- 
-  delay(25); */
+  delay (500);
 }

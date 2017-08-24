@@ -1,5 +1,5 @@
 /*
- VernierPhotogate (v 2014.12)
+ VernierPhotogate (v 2017.07)
  Monitors a Vernier Photogate connected to BTD 1 connector. 
 
 This sketch lists the time that the photogate is blocked in 
@@ -11,10 +11,10 @@ fairly frequently. Use whichever time you like in your versions of this.
 See www.vernier.com/arduino for more information.
 
  */
-unsigned long Timems = 0; //Time in ms
-unsigned long Timeus = 0; //Time in us
-int PhotogatePin =2; //
-int Photogate = HIGH;
+unsigned long timems = 0; //Time in ms
+unsigned long timeus = 0; //Time in us
+int photogatePin =2; //
+int photogate = HIGH;
 int status;
 int LEDpin =13;/// line for LED to turn on when photogate is blocked
 
@@ -34,22 +34,21 @@ void setup()
   
 void loop ()
 {
-  Photogate = digitalRead(PhotogatePin);//low when blocked
-   if (Photogate == LOW)
+  photogate = digitalRead(photogatePin);//low when blocked
+   if (photogate == LOW)
    { 
     digitalWrite(LEDpin, HIGH);// turn on LED
         if (status == HIGH)
           {
-          Serial.print(Photogate);
-          Timems = millis() ;
-          Timeus = micros() ;
-          Serial.print(Timems);
+          timems = millis() ;
+          timeus = micros() ;
+          Serial.print(timems);
           Serial.print("\t"); //tab character
-          Serial.println(Timeus);
+          Serial.println(timeus);
            }
    }
    else digitalWrite(LEDpin, LOW);// turn off LED
-   status = Photogate;
+   status = photogate;
  } ;// end of loop
 
 

@@ -1,5 +1,5 @@
 /*
-VernierPendulumDriver (v 2015.03)
+VernierPendulumDriver (v 2017.07)
 This sketch assumes that a Vernier Photogate is connected to BTD 1 and a 
 Vernier Digital Control Unit (DCU) is connected to BTD2.
 
@@ -20,20 +20,22 @@ through the photogate before it reaches the bottom of the swing.
 See www.vernier.com/arduino for more information.
 
  */
-unsigned long Timems = 0; //Time in ms
-unsigned long PreviousTime= 0;// remember the previous time
-int PhotogatePin =2; //
-int Photogate = HIGH;// not blocked is HIGH
-int PreviousPhotogate=HIGH;
+#include "VernierLib.h"
+VernierLib Vernier;
+unsigned long timems = 0; //Time in ms
+unsigned long previousTime= 0;// remember the previous time
+int photogatePin =2; //
+int photogate = HIGH;// not blocked is HIGH
+int previousPhotogate=HIGH;
 
-int Count=1; //used to determine which direction the pendulum is swinging
+int count=1; //used to determine which direction the pendulum is swinging
 int LEDpin =13;/// line for LED to turn on when photogate is blocked
 int DCUline = 6;//This line will turn on the first line of the DCU, if
 // the DCU is connected to BTD2
 void setup() 
   {
     Serial.begin(9600);           // set up Serial library at 9600 bps
-    pinMode (PhotogatePin,INPUT);
+    pinMode (photogatePin,INPUT);
     pinMode(DCUline, OUTPUT);
     pinMode(LEDpin, OUTPUT);
     Serial.println("Vernier Format 2");
@@ -48,31 +50,31 @@ void setup()
   
 void loop ()
 {
-  Photogate = digitalRead(PhotogatePin);//low when blocked
-  if (Photogate == LOW) //low when blocked
+  photogate = digitalRead(photogatePin);//low when blocked
+  if (photogate == LOW) //low when blocked
    { 
      digitalWrite(LEDpin, HIGH);
-     if (PreviousPhotogate == HIGH)  // if the photogate has just gone to the blocked state
+     if (previousPhotogate == HIGH)  // if the photogate has just gone to the blocked state
          { 
-          Count++; //increment count of times photogate has been blocked
-          if (Count % 2 == 0)// if the bob is moving in the right direction
+          count++; //increment count of times photogate has been blocked
+          if (count % 2 == 0)// if the bob is moving in the right direction
             {
-              Timems = millis() ;
-              digitalWrite(DCUline, HIGH); // turn on DCU line 1 and the electromagnet DCU line
+              timems = millis() ;
+              Vernier.DCU(DCUline); // turn on DCU line 1 and the electromagnet DCU line
               // and print out the swing number and period
-              Serial.print(Count);
+              Serial.print(count);
               Serial.print("\t"); // tab character
-              Serial.println(Timems-PreviousTime);
-              PreviousTime= Timems; // remember the previous time
+              Serial.println(timems-previousTime);
+              previousTime= timems; // remember the previous time
              }// end of the section for action take at the end of the complete swing
            } // end of photogate just gone blocked section
       }// end of if photogate blocked
       else //photogate not blocked:
         {
-          digitalWrite(DCUline, LOW);// turn off DCU line 1 and the electromagnet
+          Vernier.DCU(0);// turn off DCU line 1 and the electromagnet
           digitalWrite(LEDpin, LOW);// turn off LED
          }
-       PreviousPhotogate = Photogate;
+       previousPhotogate = photogate;
      } ;// end of loop
 
 
