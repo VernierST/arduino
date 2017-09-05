@@ -1,5 +1,5 @@
 /*
-VernierBNC (v 2017.08)
+VernierISE (v 2017.09)
 Reads a Vernier analog (BTA) Ion Selective Electrode (ISE) sensor connected to Analog 1 
 port of the Vernier Sensor. 
 The ISE probes can be tricky to use with the Arduino because the sensor must be 
