@@ -7,7 +7,7 @@ and then calculates the corresponding distance (based on the speed of ultrasound
 in air) and displays the distance (in cm) on the Serial Monitor. 
 
 Here is how the Vernier Motion Detector works:
-- when pin 2 on BTD is pulled high, this triggers the ultrasound pulse
+- when pin 2 on BTD is pulled high the ultrasound pulse is triggered
 - the program then starts timing but then delays 0.9 ms *(blanking time,
    0.9 seconds is the time it takes ultrasound to travel 15 cm twice (round trip))
 - the program then monitors pin 1 on the BTD, waiting for it to go high. 
@@ -16,8 +16,8 @@ This happens when an echo is detected.
 As written, the reading will be displayed roughly every quarter of a second. 
 Change the delay at the end of the loop to change the rate.
 
-This version turns on an LED connected to pin 13,
-if the distance is less than one meter  
+This version turns on an LED connected to pin 13 if the distance is less 
+than one meter.
 
 See www.vernier.com/arduino for more information.
  */
@@ -61,7 +61,7 @@ void loop()
   do
   {
     val =digitalRead(EchoPin);
-    // if no echo, repeat loop and wait:
+    // if no echo, repeat loop and wait
   }
   while (val == LOW) ;
   Duration =micros() - time;
