@@ -4,13 +4,15 @@ Using Arduino and Vernier Sensors
 Overview
 --------
 
-Vernier has always supported hands-on, do-it-yourself projects for students (or teachers). The availability of very inexpensive, easy-to-program microcomputers, like the Arduino, makes projects easy and affordable.
+Vernier has always supported hands-on, do-it-yourself projects for students (or teachers). The availability of very inexpensive, easy-to-program microcomputers,
+like the Arduino, makes projects easy and affordable.
 
-We posted a guide to [Using Vernier sensors with Arduino][1]. It is a free guide to connecting, calibrating, writing programs, and doing fun projects with our sensors. The guide references sketches included in this repository.
+We posted a guide to [Using Vernier sensors with Arduino][1]. It is a free guide to connecting, calibrating, writing programs, and doing fun projects with our sensors.
+The guide references sketches included in this repository.
 
 All sketches are developed by Vernier.
 
-If you want an Arduino library to automatically detect Vernier sensors, please see [VernierLib][2]
+Include the [VernierLib library][2] in your version of the Arduino IDE to make using Vernier sensors easy.
 
 
 License
